@@ -28,9 +28,20 @@ namespace BooksAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
             services.AddDbContext<BooksDBContext>(options=>{
 
-                options.UseSqlServer();
+                options.UseSqlServer(Configuration.GetConnectionString("BooksDB"));
+            });
+            services.AddCors(options =>
+            {
+                options.AddPolicy("corsepolicy",
+                                  builder =>
+                                  {
+                                      builder.AllowAnyOrigin()
+                                                          .AllowAnyHeader()
+                                                          .AllowAnyMethod();
+                                  });
             });
         }
 
@@ -43,11 +54,12 @@ namespace BooksAPI
             }
 
             app.UseHttpsRedirection();
+            
 
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseCors("corsepolicy");
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

@@ -36,11 +36,11 @@ namespace BooksAPI.Models
             {
                 entity.ToTable("Book");
 
-                entity.Property(e => e.Author).HasMaxLength(50);
+                entity.Property(e => e.Author).HasMaxLength(250);
 
                 entity.Property(e => e.PublishedAt).HasColumnType("datetime");
 
-                entity.Property(e => e.Title).HasMaxLength(50);
+                entity.Property(e => e.Title).HasMaxLength(250);
             });
 
             OnModelCreatingPartial(modelBuilder);
